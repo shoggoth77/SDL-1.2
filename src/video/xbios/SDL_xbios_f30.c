@@ -133,7 +133,7 @@ static int allocVbuffers_SV(_THIS, const xbiosmode_t *new_video_mode, int num_bu
 
 void SDL_XBIOS_VideoInit_F30(_THIS)
 {
-	long cookie_cnts, cookie_scpn, cookie_dummy;
+	long cookie_cmch, cookie_cnts, cookie_scpn, cookie_dummy;
 
 	XBIOS_listModes = listModes;
 	XBIOS_saveMode = saveMode;
@@ -167,6 +167,12 @@ void SDL_XBIOS_VideoInit_F30(_THIS)
 	/* Centscreen ? */
 	if (Getcookie(C_CNTS, &cookie_cnts) == C_FOUND) {
 		SDL_XBIOS_VideoInit_Centscreen(this);
+	} else
+	/* Vampire V4? */
+	if (Getcookie(C__MCH, &cookie_cmch) == C_FOUND) {
+		if((cookie_cmch >> 16) == MCH_V4) {
+			SDL_XBIOS_VideoInit_V4(this);
+		}
 	}
 }
 
